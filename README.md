@@ -41,19 +41,19 @@ Sample reha template is described as follows:
 Поясненія:
  * Мѣта 'i' не имѣетъ допустимыхъ ключей, и они будутъ удалены изъ входного потока. Въ случаѣ, если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать.
   Примѣры:
-  * <i id="i_id">Text</i> -> <i>Text</i>
-  * <font>Text<i>?</i></font> -> <font>Text</font>
+<i id="i_id">Text</i> -> <i>Text</i>
+<font>Text<i>?</i></font> -> <font>Text</font>
 
  * Допустимыми ключами для мѣты 'font' являются 'face' и 'size'. Въ случаѣ, если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать, а если правилу очищенія, то её содержимое станетъ порожнимъ.
   Примѣры:
-  * <font size="5" color="blue">Text</font> -> <font size="5">Text</font>
-  * <i>Text<font>  </font></i> -> <i>Text</i>
-  * <i>Text<font>??</font></i> -> <i>Text<font></font></i>
+<font size="5" color="blue">Text</font> -> <font size="5">Text</font>
+<i>Text<font>  </font></i> -> <i>Text</i>
+<i>Text<font>??</font></i> -> <i>Text<font></font></i>
 
  * Допустимыя ключи для мѣты 'span' отсутствуютъ, и въ случаѣ ихъ обнаруженія въ входномъ потокѣ они будутъ вырѣзаны изъ него. Если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать какъ таковая. Въ остальныхъ же случаяхъ её содержимое будетъ добавлено къ мѣтѣ родительской.
   Примѣры:
-  * <span id="span_id">Text</span> -> <span>Text</span>
-  * <i>Text<span>?</span></i> -> <i>Text</i>
+<span id="span_id">Text</span> -> <span>Text</span>
+<i>Text<span>?</span></i> -> <i>Text</i>
 
 Descriptions:
  * Tag 'i' hasn't allowable attributes, so them will be removed from an output stream. In case, the tag containment meets a remove rule, the tag will be absent in the output;
