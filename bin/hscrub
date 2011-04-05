@@ -1,0 +1,78 @@
+#!/usr/bin/ruby -KU
+#<Encoding:UTF-8>
+
+require 'optparse'
+# check if hscrubber is available as not-a-gem
+begin
+  $: << '../lib' << './lib'
+  require 'hscrubber'
+rescue LoadError
+  begin require 'rubygems'; rescue LoadError; end
+  retry
+end
+
+begin
+    dest = File.expand_path(File.dirname($0))
+    content = ofile = nil
+    reha = '.реха.yml'
+
+    ARGV.options do |o|
+    script_name = File.basename($0)
+
+        o.set_summary_indent('  ')
+        o.banner =    "Usage: #{script_name} [OPTIONS] files"
+        o.separator   ""
+        o.separator   "Mandatory arguments to long options are mandatory for " +
+                "short options too."
+
+        o.on("-o", "--output-target=val", String,
+                "Output file or folder to store a result")  { |i| ofile = i }
+        o.on("-r", "--reha-filter-config=val", String,
+                "Reha filter configuration file")	    { |i| reha = i }
+
+        o.separator ""
+
+        o.on_tail("-h", "--help", "Show this help message") { $stderr.puts o; exit }
+
+        o.parse!
+
+    end
+
+    $hs = HScrubber.new( IO.read(reha) )
+
+    def scrub(content, of)
+      content = content.gsub(/\r/, '')
+      of.puts $hs.scrub_html(content)
+    end
+
+    if ofile
+      if ARGV.empty?
+	ofile = File.join(ofile, 'stdin') if File.exist?(ofile) and File.directory?(ofile)
+	File.open(ofile, 'w+') do |of| scrub( $stdin.read, of ) end
+      else
+	if File.exist?(ofile) and File.directory?(ofile)
+	  ARGV.each do |fn|
+	    content = IO.read(fn)
+	    File.open(File.join(ofile, File.basename(fn)), 'w+') do |of|
+	      scrub( content, of )
+	    end
+	  end
+	else
+	  File.open(ofile, 'w+') do |of|
+	    ARGV.each do |fn| scrub( IO.read(fn), of ) end
+	  end
+	end
+      end
+    else
+      if ARGV.empty?
+	scrub( $stdin.read, $stdout )
+      else
+	ARGV.each do |fn| scrub( IO.read(fn), $stdout ) end
+      end
+    end
+rescue
+    puts $!.to_s + "\n\t#{$@.join("\n\t")}"
+    exit 1
+end
+
+
