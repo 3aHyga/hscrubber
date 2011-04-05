@@ -29,6 +29,7 @@ The keys are ranged according to priority their analysing. The '@' symbol necess
 
 ## Примѣръ (Sample)
 Примѣрный шаблонъ файла рѣхи представленъ нижѣ:
+
 Sample reha template is described as follows:
 
     ---
@@ -71,6 +72,33 @@ Tag 'i' hasn't allowable attributes, so them will be removed from an output stre
 Allowable attributes for the 'font' tag are 'face', and 'size'. In case, if the tag containment meets a remove rule, the tag will be absent in the output, and if meets a cleanup rule, the containment will be purged;
 
 Tag 'span' hasn't allowable attributes, so them will be removed from an output stream. In case, the tag containment meets a remove rule, the tag will be absent in the output as it is. In other cases, its containment will be added to a parent tag.
+
+## Использованіе (Usage)
+Суть 2 способа испозованія пакета въ ruby-приложеніяхъ.
+
+### Используя методъ экземпляра класса (Using the class instance method)
+Создай экземпляръ класса, передавъ конструктору рѣху загруженную въ видѣ строки или IO-класса, а затѣмъ прорѣши HTML-документъ:
+
+Make a class instance, passing a reha to its initialize function. The reha must be loaded as a String, or an IO class. Then filter a HTML:
+
+    рѣха = IO.read('.рѣха.yml.sample')
+    hs = HScrubber.new(рѣха)
+
+    html = IO.read('sample.html').gsub(/\r/, '')
+    new_html = hs.scrub_html(html)
+
+    puts html
+
+### Используя методъ класса (Using the class method)
+Можно прорѣшить HTML-документъ и не создавая экземпляръ класса. Тогда дѣлай такъ:
+
+We able to filter the HTML-document without a class instance creation. Do as follows:
+
+    рѣха = IO.read('.рѣха.yml.sample')
+    html = IO.read('sample.html').gsub(/\r/, '')
+    new_html = HScrubber.scrub_html(html, рѣха)
+
+    puts html
 
 # Права (Copyright)
 
