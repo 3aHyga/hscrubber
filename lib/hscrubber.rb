@@ -82,7 +82,7 @@ class HScrubber
       changed
   end
 
-  def self.scrub_remove_by_rule(elem, verility)
+  def self.process_specials(elem, verility)
       changed = nil
       repeat = true
 
@@ -163,58 +163,10 @@ class HScrubber
       changed
   end
 
-  def self.scrub_replace_by_rule(elem, verility)
-      changed = nil
-      repeat = true
-
-      res = []
-
-      elem.children.each do |sub|
-	  repeat = false
-	  sub_ch = nil
-	  case sub.class.to_s
-	  when 'Hpricot::Elem'
-	      if sub.children and verility.key? sub.name
-		  strip_tags = []
-		  verility[sub.name].each do |key, value|
-		      # TODO match value to as regexp to attr value
-		      case key
-		      when '@%'
-			  # replace elem if match to re
-			  inner = sub.inner_html.gsub(/(\r\n|\n)/,' ')
-			  if self.fix(inner) =~ /#{value}/
-			      new = Hpricot::Text.new("\x1F")
-			      new.parent = sub
-			      sub.children.replace [ new ]
-			      changed = true
-			  end
-		      end
-		  end if verility[sub.name]
-	      else
-		  repeat = true; changed = true
-	      end
-	  when 'Hpricot::Text'
-	  else
-	      repeat = true; changed = true
-	  end if sub.parent == elem
-	  if not repeat
-	      if sub_ch
-		  res.concat sub_ch
-	      else
-		  res << sub
-	      end
-	  end
-      end if elem.children and not elem.children.empty?
-
-      elem.children.replace res
-
-      changed
-  end
-
   def self.scrub_elem(elem, verility)
       while (
 	  self.scrub_children(elem, verility) ||
-	  self.scrub_remove_by_rule(elem, verility) ||
+	  self.process_specials(elem, verility) ||
 	  self.scrub_follower(elem) ||
 	  self.scrub_special(elem))
       end
