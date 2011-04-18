@@ -123,8 +123,8 @@ class HScrubber
 				  repeat = true; changed = true
 			      end
 			  end
-		      when '@%'
-			  # replace elem if match to re
+		      when '@_'
+			  # clear elem if match to re
 			  inner = sub.inner_html.gsub(/(\r\n|\n)/,' ')
 			  if self.fix(inner) =~ /#{value}/
 			      new = Hpricot::Text.new("\x1F")

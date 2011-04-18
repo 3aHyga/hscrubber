@@ -9,7 +9,7 @@ HScrubber is HTML reha engine, and it allows filtering an input flow according t
 
 Рѣха задаётся въ видѣ YAML-документа. На самомъ верхнемъ уровнѣ описываются мѣты (HTML tags), допустимыя въ выходномъ документѣ. Слѣдующій уровень задаётъ допустимыя свойства (attributes) для опредѣлённой мѣты, а также ключи, управляющія мѣтою и её содержимымъ. Возможныя ключи и их значенія суть такія:
 
- * '%' содержимое мѣты будетъ очищено, если оно подпадаетъ подъ заданное въ значеніи ключа правило;
+ * '_' содержимое мѣты будетъ очищено, если оно подпадаетъ подъ заданное въ значеніи ключа правило;
 
  * '-' мѣта удаляется въ томъ случаѣ, если её содержимое подпадаетъ подъ заданное въ значеніи ключа правило;
 
@@ -19,7 +19,7 @@ HScrubber is HTML reha engine, and it allows filtering an input flow according t
 
 Reha is set up as an YAML-document. The allowed in an output flow HTML tags is described at the top level of the document. The following level described allowed attributes of the specified tag, and also rule keys that controls the tag and ots containment. The keys, and its values are the following:
 
- * '%' declares that the containment of the tag will be cleaned up, if it matches to the specified rule;
+ * '_' declares that the containment of the tag will be cleaned up, if it matches to the specified rule;
 
  * '-' a tag will be removed, if its containment matches to the specified rule;
 
@@ -42,7 +42,7 @@ Sample reha template is described as follows:
       face:
       size:
       @-: ^\s+$
-      @%: ^[.,:!?#]+$
+      @_: ^[.,:!?#]+$
     span:
       @^:
       @-: ^[.,:;!?\s]*$
