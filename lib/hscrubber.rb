@@ -1,6 +1,7 @@
 #!/usr/bin/ruby -KU
 # encoding: utf-8
 
+require 'rdoba/hashorder'
 require 'yaml'
 require 'hpricot'
 require 'hscrubber/version'
@@ -111,6 +112,8 @@ class HScrubber
 				  repeat = true; changed = true
 			      end
 			  end
+		      when '@%'
+			  (sub.raw_attributes.order = value.split(',').map do |x| x.strip end) if value
 		      when '@^'
 			  inner = sub.inner_html.gsub(/(\r\n|\n)/,' ')
 			  unless value and self.fix(inner) !~ /#{value}/

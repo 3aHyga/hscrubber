@@ -13,7 +13,9 @@ HScrubber is HTML reha engine, and it allows filtering an input flow according t
 
  * '-' мѣта удаляется въ томъ случаѣ, если её содержимое подпадаетъ подъ заданное въ значеніи ключа правило;
 
- * '^' содержимое мѣты добавляется къ содержимому родителькой мѣты въ томъ случаѣ, если содержимое сей мѣты подпадаетъ подъ правило, или если правило не задано.
+ * '^' содержимое мѣты добавляется къ содержимому родителькой мѣты въ томъ случаѣ, если содержимое сей мѣты подпадаетъ подъ правило, или если правило не задано;
+
+ * '%' задаётъ порядокъ слѣдованія ключей мѣты въ выходномъ файлѣ. Ключи пишутся черезъ запятую.
 
 Ключи здѣ расположены въ порядкѣ первичности ихъ провѣрки. Каджый изъ нихъ обязательно предваряется символомъ '@'
 
@@ -23,7 +25,9 @@ Reha is set up as an YAML-document. The allowed in an output flow HTML tags is d
 
  * '-' a tag will be removed, if its containment matches to the specified rule;
 
- * '^' containment of a tag will be added to containment of the parent tag, if containment of the tag matches to the specified rule, or if the rule isn't defined.
+ * '^' containment of a tag will be added to containment of the parent tag, if containment of the tag matches to the specified rule, or if the rule isn't defined;
+
+ * '%' sets the attributes order in the output file. The attributes is writing via comma.
 
 The keys are ranged according to priority their analysing. The '@' symbol necessarily outruns each of the keys.
 
@@ -41,6 +45,7 @@ Sample reha template is described as follows:
     font:
       face:
       size:
+      @%: size,face
       @-: ^\s+$
       @_: ^[.,:!?#]+$
     span:
@@ -54,11 +59,12 @@ Sample reha template is described as follows:
     <i id="i_id">Text</i> -> <i>Text</i>
     <font>Text<i>?</i></font> -> <font>Text</font>
 
-Допустимыми ключами для мѣты 'font' являются 'face' и 'size'. Въ случаѣ, если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать, а если правилу очищенія, то её содержимое станетъ порожнимъ. Примѣры:
+Допустимыми ключами для мѣты 'font' являются 'face' и 'size'. Въ случаѣ, если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать, а если правилу очищенія, то её содержимое станетъ порожнимъ, ключи будутъ расположены въ порядкѣ size, face. Примѣры:
 
     <font size="5" color="blue">Text</font> -> <font size="5">Text</font>
     <i>Text<font>  </font></i> -> <i>Text</i>
     <i>Text<font>??</font></i> -> <i>Text<font></font></i>
+    <font face="Arial" size="5">Text</font> -> <font size="5" face="Arial">Text</font>
 
 Допустимыя ключи для мѣты 'span' отсутствуютъ, и въ случаѣ ихъ обнаруженія въ входномъ потокѣ они будутъ вырѣзаны изъ него. Если содержимое мѣты удовлѣтворяетъ правилу удаления, на выходѣ сія мѣта будетъ отсутствовать какъ таковая. Въ остальныхъ же случаяхъ её содержимое будетъ добавлено къ мѣтѣ родительской. Примѣры:
 
@@ -69,7 +75,7 @@ Descriptions:
 
 Tag 'i' hasn't allowable attributes, so them will be removed from an output stream. In case, the tag containment meets a remove rule, the tag will be absent in the output;
 
-Allowable attributes for the 'font' tag are 'face', and 'size'. In case, if the tag containment meets a remove rule, the tag will be absent in the output, and if meets a cleanup rule, the containment will be purged;
+Allowable attributes for the 'font' tag are 'face', and 'size'. In case, if the tag containment meets a remove rule, the tag will be absent in the output, and if meets a cleanup rule, the containment will be purged, and the attributes will be ordered as 'size', and then 'face';
 
 Tag 'span' hasn't allowable attributes, so them will be removed from an output stream. In case, the tag containment meets a remove rule, the tag will be absent in the output as it is. In other cases, its containment will be added to a parent tag.
 
