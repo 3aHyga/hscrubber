@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.6.0'
 
+  s.add_dependency 'rdoba', ">= 0.1"
   s.add_dependency 'hpricot', ">= 0.8.4"
 
   s.add_development_dependency("bundler", ">= 1.0.0")
