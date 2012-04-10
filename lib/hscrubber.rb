@@ -53,6 +53,8 @@ class HScrubber
 		      (old.raw_attributes.class == Hash and
 		      old.raw_attributes == sub.raw_attributes))
 		  sub_ch = sub.children
+		  next unless sub_ch
+
 		  idx = elem.children.index(sub)
 		  
 		  sub_ch.each do |x| x.parent = old end
